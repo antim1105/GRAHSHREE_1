@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>GrahShree Ready-Made Concentrate Dashboard</title>
+  <title>GrahShree Complete Concentrate Dashboard (9 Products)</title>
 
   <script src="https://cdn.tailwindcss.com"></script>
   <script>
@@ -62,7 +62,7 @@
     <div class="p-6 border-b border-white/10 flex items-start justify-between">
       <div>
         <div class="text-3xl font-bold tracking-wide">गृह<span class="text-blue-400">श्री</span></div>
-        <div class="text-sm text-slate-400 mt-1">Concentrate Blending Hub</div>
+        <div class="text-sm text-slate-400 mt-1">9-Product Blending Hub</div>
       </div>
       <button id="closeMenuBtn" class="md:hidden p-2 rounded-lg text-slate-400 hover:text-white hover:bg-slate-800" aria-label="Close menu">
         <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -80,7 +80,7 @@
     <ul id="productList" class="flex-1 overflow-y-auto sidebar-scrollbar px-3 pb-4 space-y-2"></ul>
 
     <div class="p-4 text-xs text-slate-500 border-t border-white/10">
-      यह मॉडल सियागंज, इंदौर के रेडीमेड कंसंट्रेट और कोल्ड ब्लेंडिंग पर आधारित है।
+      गृहश्री ब्रांड - सियागंज इंदौर के रेडीमेड कंसंट्रेट मॉडल पर आधारित।
     </div>
   </aside>
 
@@ -124,7 +124,7 @@
         <!-- Empty -->
         <div id="emptyState" class="py-20 text-center">
           <div class="text-5xl mb-4">🧪</div>
-          <h2 class="text-xl font-semibold text-slate-800">गृहश्री कंसंट्रेट ब्लेंडिंग डैशबोर्ड</h2>
+          <h2 class="text-xl font-semibold text-slate-800">गृहश्री 9-उत्पाद कंसंट्रेट डैशबोर्ड</h2>
           <p class="text-slate-500 mt-2">कंसंट्रेट और पानी की सही मात्रा देखने के लिए सूची से कोई प्रोडक्ट चुनें।</p>
         </div>
 
@@ -135,7 +135,7 @@
           <div class="grid grid-cols-2 lg:grid-cols-4 gap-3 md:gap-5 mb-8">
             <div class="bg-white border border-slate-200 p-4 rounded-xl shadow-sm">
               <span class="block text-[10px] md:text-xs text-slate-500 uppercase font-semibold mb-2">💧 Water Type</span>
-              <strong id="qcTds" class="text-base md:text-lg text-slate-800">RO Water Only</strong>
+              <strong id="qcTds" class="text-base md:text-lg text-slate-800">Clean RO Water</strong>
             </div>
             <div class="bg-white border border-slate-200 p-4 rounded-xl shadow-sm">
               <span class="block text-[10px] md:text-xs text-slate-500 uppercase font-semibold mb-2">👀 Visual Output</span>
@@ -255,8 +255,8 @@
 
 <script>
   /*
-   * GrahShree 7 Products Ready-Made Concentrate Blending Model
-   * Based on Siyaganj, Indore wholesale market standards
+   * GrahShree 9 Products Ready-Made Concentrate Blending Model
+   * Including Fabric Conditioner and Traditional Phenyl
    */
 
   const products = [
@@ -357,6 +357,33 @@
         { name: 'Car Wash Shampoo Concentrate', role: 'High Foam & Wax Base', pct: 18.0, unit: 'L', rate: 130, color: '#f59e0b' },
         { name: 'Industrial Salt', role: 'Thickener', pct: 1.5, unit: 'kg', rate: 10, color: '#cbd5e1' },
         { name: 'Orange Perfume & Color', role: 'Aesthetics', pct: 0.5, unit: 'L', rate: 400, color: '#ea580c' }
+      ]
+    },
+    {
+      id: 'fabric',
+      name: '🌸 Fabric Conditioner',
+      tagline: 'गृहश्री - कपड़ों की softness और महक',
+      qc: { visual: 'Milky Pearly Liquid', density: 'Softener Base' },
+      note: 'सियागंज से "फैब्रिक कंडीशनर बेस" लें जो कपड़ों को मुलायम और सुगंधित बनाता है।',
+      sop: 'बाल्टी में हल्का गुनगुना या सामान्य RO पानी लें। उसमें धीरे-धीरे कंडीशनर बेस मिलाएं और ऊपर से लॉन्ग-लॉस्टिंग फ्लोरल परफ्यूम व हल्का गुलाबी रंग जोड़ें।',
+      checklist: 'क्वालिटी चेक: यह पानी जैसा पतला नहीं होना चाहिए, इसमें मलाईदार टेक्सचर होना चाहिए।',
+      ingredients: [
+        { name: 'RO Water', role: 'Base Solvent', pct: 80.0, unit: 'L', rate: 1, color: '#3b82f6' },
+        { name: 'Fabric Softener Base', role: 'Softness & Antistatic', pct: 18.0, unit: 'L', rate: 150, color: '#ec4899' },
+        { name: 'Floral Perfume & Color', role: 'Aesthetics', pct: 2.0, unit: 'L', rate: 450, color: '#f472b6' }
+      ]
+    },
+    {
+      id: 'whitephenyl',
+      name: '🧽 Traditional White Phenyl',
+      tagline: 'गृहश्री - पारंपरिक सफाई और महक',
+      qc: { visual: 'Milky White Liquid', density: 'Traditional Phenyl' },
+      note: 'सियागंज से "वाइट फिनाइल कंपाउंड" (पाइन और इमल्सीफायर मिक्स्ड) लें।',
+      sop: 'बड़ी बाल्टी में सारा RO पानी भर लें। अब धीरे-धीरे कंपाउंड डालते जाएं और डंडे से हिलाएं। पानी तुरंत दूधिया सफेद हो जाएगा।',
+      checklist: 'फायदा: ग्रामीण और अर्ध-शहरी बाजारों में इसकी सबसे ज्यादा डिमांड और खपत होती है।',
+      ingredients: [
+        { name: 'RO Water', role: 'Base Solvent', pct: 95.0, unit: 'L', rate: 1, color: '#3b82f6' },
+        { name: 'White Phenyl Compound', role: 'Pine Oil & Emulsifier Blend', pct: 5.0, unit: 'L', rate: 140, color: '#64748b' }
       ]
     }
   ];
