@@ -1,0 +1,633 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>GrahShree Ready-Made Concentrate Dashboard</title>
+
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: { sans: ['Poppins', 'ui-sans-serif', 'system-ui', 'sans-serif'] },
+          animation: {
+            'fade-in-up': 'fadeInUp .35s cubic-bezier(.16,1,.3,1) forwards'
+          },
+          keyframes: {
+            fadeInUp: {
+              '0%': { opacity: '0', transform: 'translateY(12px)' },
+              '100%': { opacity: '1', transform: 'translateY(0)' }
+            }
+          }
+        }
+      }
+    };
+  </script>
+
+  <style>
+    body { font-family: Poppins, ui-sans-serif, system-ui, sans-serif; }
+    .custom-scrollbar::-webkit-scrollbar { width: 6px; height: 6px; }
+    .custom-scrollbar::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 999px; }
+    .sidebar-scrollbar::-webkit-scrollbar { width: 4px; }
+    .sidebar-scrollbar::-webkit-scrollbar-thumb { background: rgba(255,255,255,.2); border-radius: 999px; }
+
+    @media print {
+      body { background: white !important; height: auto !important; overflow: visible !important; }
+      .print-hidden { display: none !important; }
+      .print-color-adjust { print-color-adjust: exact; -webkit-print-color-adjust: exact; }
+      #printableArea { box-shadow: none !important; border: none !important; padding: 0 !important; }
+    }
+  </style>
+</head>
+
+<body class="bg-slate-50 text-slate-700 h-screen overflow-hidden flex">
+
+  <!-- Mobile Header -->
+  <header class="md:hidden fixed top-0 left-0 right-0 h-16 bg-slate-900 text-white flex items-center justify-between px-4 z-40 shadow-md print-hidden">
+    <div class="text-xl font-bold tracking-wide">गृह<span class="text-blue-400">श्री</span></div>
+    <button id="openMenuBtn" class="p-2 rounded-lg hover:bg-slate-800" aria-label="Open menu">
+      <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/>
+      </svg>
+    </button>
+  </header>
+
+  <!-- Backdrop -->
+  <div id="sidebarBackdrop" class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-40 hidden opacity-0 transition-opacity print-hidden"></div>
+
+  <!-- Sidebar -->
+  <aside id="sidebar"
+         class="fixed inset-y-0 left-0 w-80 bg-slate-900 text-white z-50 -translate-x-full md:translate-x-0 md:relative md:flex md:flex-col transition-transform duration-300 shadow-2xl print-hidden">
+    <div class="p-6 border-b border-white/10 flex items-start justify-between">
+      <div>
+        <div class="text-3xl font-bold tracking-wide">गृह<span class="text-blue-400">श्री</span></div>
+        <div class="text-sm text-slate-400 mt-1">Concentrate Blending Hub</div>
+      </div>
+      <button id="closeMenuBtn" class="md:hidden p-2 rounded-lg text-slate-400 hover:text-white hover:bg-slate-800" aria-label="Close menu">
+        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
+        </svg>
+      </button>
+    </div>
+
+    <div class="px-4 py-3">
+      <label for="searchProduct" class="sr-only">Search products</label>
+      <input id="searchProduct" type="search" placeholder="Search product..."
+             class="w-full rounded-xl bg-slate-800 border border-slate-700 px-4 py-3 text-sm text-white placeholder-slate-400 outline-none focus:ring-2 focus:ring-blue-500">
+    </div>
+
+    <ul id="productList" class="flex-1 overflow-y-auto sidebar-scrollbar px-3 pb-4 space-y-2"></ul>
+
+    <div class="p-4 text-xs text-slate-500 border-t border-white/10">
+      यह मॉडल सियागंज, इंदौर के रेडीमेड कंसंट्रेट और कोल्ड ब्लेंडिंग पर आधारित है।
+    </div>
+  </aside>
+
+  <!-- Main -->
+  <main class="flex-1 h-full mt-16 md:mt-0 overflow-y-auto custom-scrollbar">
+    <div class="p-4 md:p-8">
+      <section id="printableArea" class="bg-white rounded-2xl shadow-sm border border-slate-200 p-5 md:p-10 min-h-full">
+
+        <!-- Header -->
+        <div class="flex flex-col xl:flex-row justify-between gap-5 items-start xl:items-center mb-8 pb-6 border-b border-slate-200">
+          <div>
+            <h1 id="productTitle" class="text-2xl md:text-3xl font-semibold text-slate-800">Select a Product</h1>
+            <p id="productTagline" class="mt-1 text-sm md:text-base text-slate-500">
+              कंसंट्रेट और पानी का अनुपात देखने के लिए बाईं ओर से उत्पाद चुनें।
+            </p>
+            <div id="formulaNote" class="hidden mt-3 text-xs text-slate-500 bg-slate-50 border border-slate-200 rounded-lg px-3 py-2 max-w-3xl"></div>
+          </div>
+
+          <div id="actionGroup" class="hidden print-hidden w-full xl:w-auto flex-col sm:flex-row gap-3">
+            <div class="bg-slate-50 border border-slate-200 rounded-xl p-3 flex items-center gap-3">
+              <label for="batchSize" class="text-xs font-semibold text-slate-500 uppercase tracking-wide">Final Batch</label>
+              <input id="batchSize" type="number" min="1" step="1" value="10"
+                     class="w-24 rounded-lg border border-slate-300 px-3 py-2 font-semibold text-slate-800 text-center focus:outline-none focus:ring-2 focus:ring-blue-500">
+              <select id="batchUnit" class="rounded-lg border border-slate-300 px-3 py-2 text-sm bg-white">
+                <option value="L">Liters</option>
+              </select>
+            </div>
+
+            <button id="printBtn" type="button"
+                    class="bg-slate-800 hover:bg-slate-900 text-white rounded-xl px-5 py-3 font-semibold text-sm flex items-center justify-center gap-2 shadow-md">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <polyline points="6 9 6 2 18 2 18 9"/>
+                <path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"/>
+                <rect x="6" y="14" width="12" height="8"/>
+              </svg>
+              Print Sheet
+            </button>
+          </div>
+        </div>
+
+        <!-- Empty -->
+        <div id="emptyState" class="py-20 text-center">
+          <div class="text-5xl mb-4">🧪</div>
+          <h2 class="text-xl font-semibold text-slate-800">गृहश्री कंसंट्रेट ब्लेंडिंग डैशबोर्ड</h2>
+          <p class="text-slate-500 mt-2">कंसंट्रेट और पानी की सही मात्रा देखने के लिए सूची से कोई प्रोडक्ट चुनें।</p>
+        </div>
+
+        <!-- Visualizer -->
+        <div id="visualizerSection" class="hidden">
+
+          <!-- QC cards -->
+          <div class="grid grid-cols-2 lg:grid-cols-4 gap-3 md:gap-5 mb-8">
+            <div class="bg-white border border-slate-200 p-4 rounded-xl shadow-sm">
+              <span class="block text-[10px] md:text-xs text-slate-500 uppercase font-semibold mb-2">💧 Water Type</span>
+              <strong id="qcTds" class="text-base md:text-lg text-slate-800">RO Water Only</strong>
+            </div>
+            <div class="bg-white border border-slate-200 p-4 rounded-xl shadow-sm">
+              <span class="block text-[10px] md:text-xs text-slate-500 uppercase font-semibold mb-2">👀 Visual Output</span>
+              <strong id="qcVisual" class="text-sm md:text-base text-slate-800">--</strong>
+            </div>
+            <div class="bg-white border border-slate-200 p-4 rounded-xl shadow-sm">
+              <span class="block text-[10px] md:text-xs text-slate-500 uppercase font-semibold mb-2">📦 Market Type</span>
+              <strong id="qcDensity" class="text-sm md:text-base text-slate-800">Ready Concentrate</strong>
+            </div>
+            <div class="bg-white border border-slate-200 p-4 rounded-xl shadow-sm">
+              <span class="block text-[10px] md:text-xs text-slate-500 uppercase font-semibold mb-2">💰 Est. Total Cost</span>
+              <strong id="qcCost" class="text-base md:text-lg text-red-500">--</strong>
+            </div>
+          </div>
+
+          <div class="flex flex-col md:flex-row md:items-center justify-between gap-3 mb-4">
+            <div>
+              <h2 class="text-xl text-slate-800 font-semibold">कंसंट्रेट ब्लेंडिंग शीट (Concentrate Recipe)</h2>
+              <p id="batchSummary" class="text-sm text-slate-500 mt-1"></p>
+            </div>
+            <div class="flex items-center gap-2 print-hidden">
+              <button id="exportCsvBtn" class="rounded-lg border border-slate-300 px-3 py-2 text-xs font-semibold hover:bg-slate-50">Export CSV</button>
+              <button id="resetBatchBtn" class="rounded-lg border border-slate-300 px-3 py-2 text-xs font-semibold hover:bg-slate-50">Reset 10L</button>
+            </div>
+          </div>
+
+          <!-- Table + Drum -->
+          <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-8">
+            <div class="lg:col-span-2 overflow-x-auto rounded-xl border border-slate-200">
+              <table class="w-full border-collapse bg-white">
+                <thead>
+                  <tr class="bg-slate-50 text-slate-500 text-xs uppercase tracking-wide text-left">
+                    <th class="p-3 md:p-4 border-b border-slate-200">Material / Component</th>
+                    <th class="p-3 md:p-4 border-b border-slate-200">Role / Action</th>
+                    <th class="p-3 md:p-4 border-b border-slate-200">Ratio / Pct</th>
+                    <th class="p-3 md:p-4 border-b border-slate-200">Quantity</th>
+                    <th class="p-3 md:p-4 border-b border-slate-200 print-hidden">Rate (₹)</th>
+                    <th class="p-3 md:p-4 border-b border-slate-200 print-hidden">Cost (₹)</th>
+                  </tr>
+                </thead>
+                <tbody id="formulaTableBody" class="text-sm"></tbody>
+                <tfoot>
+                  <tr class="bg-slate-50 font-bold">
+                    <td colspan="2" class="p-3 md:p-4 text-right">Total:</td>
+                    <td id="totalPct" class="p-3 md:p-4 text-blue-600">100.00%</td>
+                    <td id="totalQty" class="p-3 md:p-4">--</td>
+                    <td class="p-3 md:p-4 print-hidden">—</td>
+                    <td id="totalCost" class="p-3 md:p-4 text-red-600 print-hidden">₹0</td>
+                  </tr>
+                </tfoot>
+              </table>
+            </div>
+
+            <!-- Drum -->
+            <div class="bg-white rounded-xl border border-slate-200 p-6 flex flex-col items-center shadow-sm">
+              <h3 class="font-bold text-slate-700 mb-6">ब्लेंडिंग बाल्टी (Mixing Bucket)</h3>
+
+              <div class="flex items-end gap-2">
+                <div class="flex flex-col justify-between h-72 py-1 text-[10px] text-slate-400 font-bold text-right">
+                  <span>100%</span>
+                  <span>75%</span>
+                  <span>50%</span>
+                  <span>25%</span>
+                  <span>0%</span>
+                </div>
+
+                <div id="drumContainer"
+                     class="relative w-32 h-72 border-4 border-slate-300 rounded-b-3xl rounded-t-xl shadow-inner flex flex-col-reverse bg-slate-50 overflow-hidden">
+                  <div class="absolute inset-0 bg-gradient-to-r from-white/40 via-transparent to-black/10 pointer-events-none z-20"></div>
+                </div>
+              </div>
+
+              <p class="mt-5 text-xs text-slate-500 text-center bg-slate-100 py-2 px-3 rounded-md">
+                मात्रा देखने के लिए बाल्टी की लेयर पर माउस ले जाएँ
+              </p>
+            </div>
+          </div>
+
+          <!-- Cost summary -->
+          <div class="grid grid-cols-2 md:grid-cols-4 gap-3 mb-8">
+            <div class="rounded-xl bg-slate-50 border border-slate-200 p-4">
+              <div class="text-xs text-slate-500">लिक्विड कॉस्ट (प्रति लीटर)</div>
+              <div id="costPerUnit" class="text-xl font-bold text-slate-800 mt-1">₹0</div>
+            </div>
+            <div class="rounded-xl bg-slate-50 border border-slate-200 p-4">
+              <div class="text-xs text-slate-500">कुल बैच रॉ-मटेरियल कॉस्ट</div>
+              <div id="batchCost" class="text-xl font-bold text-slate-800 mt-1">₹0</div>
+            </div>
+            <div class="rounded-xl bg-slate-50 border border-slate-200 p-4">
+              <div class="text-xs text-slate-500">बोतल + लेबल + ढक्कन (Optional)</div>
+              <input id="otherCost" type="number" min="0" step="0.01" value="0" placeholder="खर्च डालें"
+                     class="mt-1 w-full rounded-lg border border-slate-300 px-2 py-1.5 text-sm font-semibold">
+            </div>
+            <div class="rounded-xl bg-slate-50 border border-slate-200 p-4">
+              <div class="text-xs text-slate-500">कुल उत्पादन लागत (Grand Total)</div>
+              <div id="grandBatchCost" class="text-xl font-bold text-blue-600 mt-1">₹0</div>
+            </div>
+          </div>
+
+          <!-- SOP -->
+          <div class="bg-amber-50 border border-amber-200 border-l-4 border-l-amber-500 p-4 md:p-5 rounded-xl">
+            <div class="flex items-center justify-between gap-3">
+              <h3 class="text-amber-700 font-bold flex items-center gap-2 text-sm md:text-base">
+                <span>⚠️</span> बनाने का सही तरीका (Blending SOP)
+              </h3>
+              <button id="toggleSopBtn" class="text-xs font-semibold text-amber-700 underline print-hidden">Hide</button>
+            </div>
+            <div id="sopContent" class="mt-2">
+              <p id="safeMethodText" class="text-amber-900 text-sm leading-relaxed"></p>
+              <p id="qcChecklist" class="text-amber-900 text-sm leading-relaxed mt-3 font-medium"></p>
+            </div>
+          </div>
+        </div>
+      </section>
+    </div>
+  </main>
+
+<script>
+  /*
+   * GrahShree 7 Products Ready-Made Concentrate Blending Model
+   * Based on Siyaganj, Indore wholesale market standards
+   */
+
+  const products = [
+    {
+      id: 'dishwash',
+      name: '🍽️ Dish Wash Liquid',
+      tagline: 'गृहश्री - बर्तनों की चमक, अपनों की मुस्कान',
+      qc: { visual: 'Thick Yellow Gel', density: 'Gel Base' },
+      note: 'सियागंज से "डिशवॉश जेल कंसंट्रेट" लें। इसे पानी में मिलाकर सीधा गाढ़ा जेल बनता है।',
+      sop: 'बाल्टी में पहले तय मात्रा में साफ RO का पानी लें। उसमें धीरे-धीरे डिशवॉश कंसंट्रेट डालें और डंडे से हिलाएं। अंत में थोड़ा सा नमक और नींबू परफ्यूम मिलाएं।',
+      checklist: 'सावधानी: पानी हमेशा RO का ही लें, बोरिंग के खारे पानी से लिक्विड पतला हो सकता है।',
+      ingredients: [
+        { name: 'RO Water', role: 'Base Solvent', pct: 80.0, unit: 'L', rate: 1, color: '#3b82f6' },
+        { name: 'Dishwash Gel Concentrate', role: 'Active Base & Foam', pct: 17.0, unit: 'L', rate: 120, color: '#f59e0b' },
+        { name: 'Industrial Salt', role: 'Viscosity / Thickener', pct: 2.5, unit: 'kg', rate: 10, color: '#cbd5e1' },
+        { name: 'Lemon Perfume & Color', role: 'Aesthetics', pct: 0.5, unit: 'L', rate: 400, color: '#eab308' }
+      ]
+    },
+    {
+      id: 'floor',
+      name: '🧹 Floor Cleaner (Pine)',
+      tagline: 'गृहश्री - कीटाणु मुक्त, सुरक्षित घर',
+      qc: { visual: 'Milky White Phenyl', density: 'Liquid Base' },
+      note: 'सियागंज से "वाइट फिनाइल कंसंट्रेट" या "पाइन बेस" लें। पानी मिलते ही दूधिया रंग हो जाता है।',
+      sop: 'बड़ी बाल्टी में सारा RO पानी भर लें। अब धीरे-धीरे फिनाइल कंसंट्रेट डालते जाएं और साथ में डंडे से हिलाते जाएं। पानी तुरंत दूधिया सफेद हो जाएगा।',
+      checklist: 'विशेषता: इसमें BKC और पाइन ऑयल पहले से मिक्स्ड होता है जो 99.9% कीटाणु मारता है।',
+      ingredients: [
+        { name: 'RO Water', role: 'Base Solvent', pct: 95.0, unit: 'L', rate: 1, color: '#3b82f6' },
+        { name: 'White Phenyl / Pine Concentrate', role: 'Disinfectant & Aroma', pct: 5.0, unit: 'L', rate: 180, color: '#10b981' }
+      ]
+    },
+    {
+      id: 'toilet',
+      name: '🚽 Toilet Cleaner',
+      tagline: 'गृहश्री - बेदाग सफाई, बिना मेहनत',
+      qc: { visual: 'Thick Blue Gel', density: 'Acidic Gel Base' },
+      note: 'सियागंज से "थickेंड टॉयलेट क्लीनर बेस" लें। यह पहले से एसिड और थिकनरयुक्त होता है।',
+      sop: 'बाल्टी में कंसंट्रेट लेकर उसमें निर्देशानुसार पानी और एसिड ब्लू कलर मिलाएं।',
+      checklist: 'सुरक्षा चेतावनी: इसे बनाते समय रबर के दस्ताने, मास्क और चश्मा जरूर पहनें।',
+      ingredients: [
+        { name: 'RO Water', role: 'Base Solvent', pct: 70.0, unit: 'L', rate: 1, color: '#3b82f6' },
+        { name: 'Thickened Toilet Cleaner Base', role: 'Acidic Cleaning & Gel', pct: 29.8, unit: 'L', rate: 45, color: '#2563eb' },
+        { name: 'Acid Blue Color', role: 'Coloring', pct: 0.2, unit: 'kg', rate: 500, color: '#1d4ed8' }
+      ]
+    },
+    {
+      id: 'detergent',
+      name: '👕 Detergent Liquid',
+      tagline: 'कपड़ों में नई जान, गृहश्री की पहचान',
+      qc: { visual: 'Smooth Blue Liquid', density: 'Liquid Detergent' },
+      note: 'सियागंज से "लॉन्ड्री लिक्विड कंसंट्रेट" लें। यह कपड़ों की गहराई से सफाई करता है।',
+      sop: 'बाल्टी में RO पानी लें, उसमें डिटर्जेंट कंसंट्रेट मिलाएं। अच्छी खुशबू और रंग डालकर घुलने तक चलाएं।',
+      checklist: 'क्वालिटी चेक: यह कपड़ों का रंग फीका नहीं पड़ने देता और हाथों को सुरक्षित रखता है।',
+      ingredients: [
+        { name: 'RO Water', role: 'Base Solvent', pct: 75.0, unit: 'L', rate: 1, color: '#3b82f6' },
+        { name: 'Liquid Detergent Concentrate', role: 'Surfactant & Cleaning', pct: 22.0, unit: 'L', rate: 95, color: '#8b5cf6' },
+        { name: 'Floral Perfume & Color', role: 'Aesthetics', pct: 3.0, unit: 'L', rate: 400, color: '#ec4899' }
+      ]
+    },
+    {
+      id: 'bathroom',
+      name: '🚿 Bathroom Cleaner',
+      tagline: 'गृहश्री - पानी के जिद्दी दागों का दुश्मन',
+      qc: { visual: 'Clear Light Pink', density: 'Mild Acidic' },
+      note: 'टायल्स और नलों के सफेद दाग हटाने के लिए माइल्ड साइट्रिक-बेस्ड कंसंट्रेट लें।',
+      sop: 'कंसंट्रेट को तय अनुपात में RO पानी के साथ मिलाएं और गुलाबी रंग व खुशबू जोड़ दें।',
+      checklist: 'चेतावनी: इसमें कभी भी टॉयलेट क्लीनर वाला तेज एसिड या ब्लीच न मिलाएं।',
+      ingredients: [
+        { name: 'RO Water', role: 'Base Solvent', pct: 85.0, unit: 'L', rate: 1, color: '#3b82f6' },
+        { name: 'Bathroom Cleaner Concentrate', role: 'Stain & Scum Remover', pct: 14.5, unit: 'L', rate: 110, color: '#ef4444' },
+        { name: 'Rose Perfume & Color', role: 'Aesthetics', pct: 0.5, unit: 'L', rate: 400, color: '#db2777' }
+      ]
+    },
+    {
+      id: 'glass',
+      name: '🪟 Glass Cleaner',
+      tagline: 'गृहश्री - चमक जो आईना बन जाए',
+      qc: { visual: 'Clear Sky Blue', density: 'Low Residue Liquid' },
+      note: 'ग्लास क्लीनर कंसंट्रेट (Colin टाइप) लें जिसमें कम झाग और फास्ट ड्राइंग गुण हो।',
+      sop: 'कंसंट्रेट को साफ पानी में डालकर हल्का नीला रंग मिलाएं। शीशे पर धारियां (Streaks) नहीं पड़नी चाहिए।',
+      checklist: 'सावधानी: इसमें अल्कोहल बेस होता है, इसलिए इसे आग या चूल्हे से दूर रखें।',
+      ingredients: [
+        { name: 'RO Water', role: 'Base Solvent', pct: 90.0, unit: 'L', rate: 1, color: '#3b82f6' },
+        { name: 'Glass Cleaner Concentrate', role: 'Solvent & Shine Agent', pct: 9.5, unit: 'L', rate: 140, color: '#0ea5e9' },
+        { name: 'Sky Blue Color & Perfume', role: 'Aesthetics', pct: 0.5, unit: 'L', rate: 400, color: '#3b82f6' }
+      ]
+    },
+    {
+      id: 'carwash',
+      name: '🚗 Car Wash Shampoo',
+      tagline: 'गृहश्री - प्रोफेशनल शाइन, अब घर पर',
+      qc: { visual: 'Thick Orange Glossy Gel', density: 'High Foam Base' },
+      note: 'हाई-फोमिंग कार वॉश कंसंट्रेट लें जिसमें वैक्स (Wax) पहले से मिला हो।',
+      sop: 'बाल्टी में पानी के साथ कंसंट्रेट मिलाएं, ऊपर से नारंगी रंग और खुशबू डालकर हल्का गाढ़ा कर लें।',
+      checklist: 'फायदा: यह कार के पेंट को सुरक्षित रखता है और धोने के बाद चमक (Gloss) लाता है।',
+      ingredients: [
+        { name: 'RO Water', role: 'Base Solvent', pct: 80.0, unit: 'L', rate: 1, color: '#3b82f6' },
+        { name: 'Car Wash Shampoo Concentrate', role: 'High Foam & Wax Base', pct: 18.0, unit: 'L', rate: 130, color: '#f59e0b' },
+        { name: 'Industrial Salt', role: 'Thickener', pct: 1.5, unit: 'kg', rate: 10, color: '#cbd5e1' },
+        { name: 'Orange Perfume & Color', role: 'Aesthetics', pct: 0.5, unit: 'L', rate: 400, color: '#ea580c' }
+      ]
+    }
+  ];
+
+  let currentProduct = null;
+  let currentIndex = -1;
+
+  const $ = id => document.getElementById(id);
+  const els = {
+    productList: $('productList'),
+    searchProduct: $('searchProduct'),
+    sidebar: $('sidebar'),
+    backdrop: $('sidebarBackdrop'),
+    openMenuBtn: $('openMenuBtn'),
+    closeMenuBtn: $('closeMenuBtn'),
+    title: $('productTitle'),
+    tagline: $('productTagline'),
+    formulaNote: $('formulaNote'),
+    actionGroup: $('actionGroup'),
+    batchSize: $('batchSize'),
+    batchUnit: $('batchUnit'),
+    printBtn: $('printBtn'),
+    emptyState: $('emptyState'),
+    visualizer: $('visualizerSection'),
+    qcTds: $('qcTds'),
+    qcVisual: $('qcVisual'),
+    qcDensity: $('qcDensity'),
+    qcCost: $('qcCost'),
+    batchSummary: $('batchSummary'),
+    tableBody: $('formulaTableBody'),
+    totalPct: $('totalPct'),
+    totalQty: $('totalQty'),
+    totalCost: $('totalCost'),
+    drum: $('drumContainer'),
+    costPerUnit: $('costPerUnit'),
+    batchCost: $('batchCost'),
+    otherCost: $('otherCost'),
+    grandBatchCost: $('grandBatchCost'),
+    safeMethodText: $('safeMethodText'),
+    qcChecklist: $('qcChecklist'),
+    toggleSopBtn: $('toggleSopBtn'),
+    sopContent: $('sopContent'),
+    exportCsvBtn: $('exportCsvBtn'),
+    resetBatchBtn: $('resetBatchBtn')
+  };
+
+  const baseItem = 'px-4 py-3 cursor-pointer rounded-xl transition-all text-sm md:text-[15px] font-medium flex items-start gap-3 border';
+  const inactive = 'text-slate-300 border-transparent hover:bg-slate-800 hover:text-white';
+  const active = 'bg-blue-600 text-white border-blue-500 shadow-lg shadow-blue-500/20';
+
+  function formatMoney(v) {
+    return new Intl.NumberFormat('en-IN', {
+      style: 'currency',
+      currency: 'INR',
+      maximumFractionDigits: 2
+    }).format(Number(v || 0));
+  }
+
+  function calcIngredient(ingredient, batchSize) {
+    const qty = (ingredient.pct / 100) * batchSize;
+    const isWeight = ['g','kg'].includes(ingredient.unit);
+    const displayQty = ingredient.unit === 'g' && qty < 1000
+      ? qty.toFixed(qty < 10 ? 2 : 1) + ' g'
+      : ingredient.unit === 'g'
+        ? (qty / 1000).toFixed(3) + ' kg'
+        : ingredient.unit === 'kg'
+          ? qty.toFixed(3) + ' kg'
+          : qty.toFixed(2) + ' L';
+    const cost = isWeight
+      ? qty * ingredient.rate / 1000
+      : qty * ingredient.rate;
+    return { qty, displayQty, cost };
+  }
+
+  function productTotalCost(product, batchSize) {
+    return product.ingredients.reduce((sum, ing) => sum + calcIngredient(ing, batchSize).cost, 0);
+  }
+
+  function renderSidebar(filter = '') {
+    els.productList.innerHTML = '';
+    const f = filter.trim().toLowerCase();
+
+    products.forEach((product, index) => {
+      const searchText = `${product.name} ${product.tagline}`.toLowerCase();
+      if (f && !searchText.includes(f)) return;
+
+      const li = document.createElement('li');
+      li.className = `${baseItem} ${index === currentIndex ? active : inactive}`;
+      li.innerHTML = `<span class="text-lg leading-none">${product.name.split(' ')[0]}</span>
+                      <span class="leading-5">${product.name.substring(product.name.indexOf(' ') + 1)}</span>`;
+      li.addEventListener('click', () => loadProduct(index));
+      els.productList.appendChild(li);
+    });
+  }
+
+  function toggleSidebar(open) {
+    if (open) {
+      els.sidebar.classList.remove('-translate-x-full');
+      els.backdrop.classList.remove('hidden');
+      requestAnimationFrame(() => els.backdrop.classList.remove('opacity-0'));
+    } else {
+      els.sidebar.classList.add('-translate-x-full');
+      els.backdrop.classList.add('opacity-0');
+      setTimeout(() => els.backdrop.classList.add('hidden'), 300);
+    }
+  }
+
+  function loadProduct(index) {
+    currentIndex = index;
+    currentProduct = products[index];
+
+    els.emptyState.classList.add('hidden');
+    els.visualizer.classList.remove('hidden');
+    els.actionGroup.classList.remove('hidden');
+    els.actionGroup.classList.add('flex');
+    els.title.textContent = currentProduct.name.substring(currentProduct.name.indexOf(' ') + 1);
+    els.tagline.textContent = currentProduct.tagline;
+    els.formulaNote.textContent = currentProduct.note;
+    els.formulaNote.classList.remove('hidden');
+
+    els.qcVisual.textContent = currentProduct.qc.visual;
+    els.qcDensity.textContent = currentProduct.qc.density;
+
+    els.safeMethodText.textContent = currentProduct.sop;
+    els.qcChecklist.textContent = currentProduct.checklist;
+
+    renderSidebar(els.searchProduct.value);
+    renderBatch();
+
+    if (window.innerWidth < 768) toggleSidebar(false);
+
+    els.visualizer.classList.remove('animate-fade-in-up');
+    void els.visualizer.offsetWidth;
+    els.visualizer.classList.add('animate-fade-in-up');
+  }
+
+  function renderBatch() {
+    if (!currentProduct) return;
+
+    let batchSize = Math.max(1, Number(els.batchSize.value) || 10);
+    const unit = els.batchUnit.value;
+    const totalCost = productTotalCost(currentProduct, batchSize);
+
+    els.tableBody.innerHTML = '';
+    els.drum.innerHTML = `<div class="absolute inset-0 bg-gradient-to-r from-white/40 via-transparent to-black/10 pointer-events-none z-20"></div>`;
+
+    currentProduct.ingredients.forEach((ing, idx) => {
+      const { displayQty, cost } = calcIngredient(ing, batchSize);
+      const tr = document.createElement('tr');
+      tr.className = 'hover:bg-slate-50 transition-colors';
+      tr.innerHTML = `
+        <td class="p-3 md:p-4 border-b border-slate-200">
+          <div class="font-semibold flex items-center gap-2">
+            <span class="w-3 h-3 rounded-full inline-block shrink-0" style="background:${ing.color}"></span>
+            <span>${escapeHtml(ing.name)}</span>
+          </div>
+        </td>
+        <td class="p-3 md:p-4 border-b border-slate-200 text-slate-500">${escapeHtml(ing.role)}</td>
+        <td class="p-3 md:p-4 border-b border-slate-200 font-semibold">${ing.pct.toFixed(2)}%</td>
+        <td class="p-3 md:p-4 border-b border-slate-200 font-bold text-slate-800">${displayQty}</td>
+        <td class="p-3 md:p-4 border-b border-slate-200 print-hidden">
+          <div class="flex items-center gap-1">
+            <span class="text-slate-400 text-xs">₹</span>
+            <input type="number" min="0" step="0.01" value="${ing.rate}"
+                   data-index="${idx}" class="rate-input w-20 rounded-md border border-slate-300 px-2 py-1 text-xs font-semibold">
+            <span class="text-[10px] text-slate-400">${ing.unit === 'kg' ? '/kg' : '/L'}</span>
+          </div>
+        </td>
+        <td class="p-3 md:p-4 border-b border-slate-200 font-bold text-red-600 print-hidden">${formatMoney(cost)}</td>
+      `;
+      els.tableBody.appendChild(tr);
+    });
+
+    els.tableBody.querySelectorAll('.rate-input').forEach(input => {
+      input.addEventListener('input', e => {
+        const i = Number(e.target.dataset.index);
+        const newRate = Math.max(0, Number(e.target.value) || 0);
+        currentProduct.ingredients[i].rate = newRate;
+        renderBatch();
+      });
+    });
+
+    const otherCost = Math.max(0, Number(els.otherCost.value) || 0);
+    const grand = totalCost + otherCost;
+
+    els.totalPct.textContent = currentProduct.ingredients
+      .reduce((s, x) => s + x.pct, 0)
+      .toFixed(2) + '%';
+    els.totalQty.textContent = `${batchSize} ${unit}`;
+    els.totalCost.textContent = formatMoney(totalCost);
+
+    els.costPerUnit.textContent = formatMoney(totalCost / batchSize);
+    els.batchCost.textContent = formatMoney(totalCost);
+    els.grandBatchCost.textContent = formatMoney(grand);
+
+    els.qcCost.textContent = formatMoney(totalCost / batchSize);
+    els.batchSummary.textContent = `Batch Size: ${batchSize} ${unit} • Formula Total: 100%`;
+
+    currentProduct.ingredients.forEach(ing => {
+      const layer = document.createElement('div');
+      layer.className = 'w-full relative group cursor-pointer flex items-center justify-center border-t border-black/10 transition-opacity hover:opacity-90';
+      layer.style.height = `${ing.pct}%`;
+      layer.style.backgroundColor = ing.color;
+      layer.innerHTML = ing.pct >= 8
+        ? `<span class="text-white text-[10px] font-bold drop-shadow">${ing.pct.toFixed(1)}%</span>`
+        : '';
+
+      const qty = calcIngredient(ing, batchSize).displayQty;
+      const tip = document.createElement('div');
+      tip.className = 'absolute bottom-full left-1/2 -translate-x-1/2 mb-2 hidden group-hover:block bg-slate-800 text-white text-xs px-2 py-1 rounded whitespace-nowrap z-40 shadow-xl';
+      tip.textContent = `${ing.name}: ${ing.pct.toFixed(2)}% • ${qty}`;
+      layer.appendChild(tip);
+      els.drum.appendChild(layer);
+    });
+  }
+
+  function escapeHtml(value) {
+    return String(value).replace(/[&<>"']/g, ch => ({
+      '&':'&amp;', '<':'&lt;', '>':'&gt;', '"':'&quot;', "'":'&#039;'
+    }[ch]));
+  }
+
+  function exportCsv() {
+    if (!currentProduct) return;
+    const batchSize = Math.max(1, Number(els.batchSize.value) || 10);
+    const rows = [
+      ['Product', currentProduct.name],
+      ['Batch Size', `${batchSize} Liters`],
+      [],
+      ['Material / Component', 'Role', 'Ratio Pct', 'Quantity', 'Rate', 'Estimated Cost']
+    ];
+
+    currentProduct.ingredients.forEach(ing => {
+      const c = calcIngredient(ing, batchSize);
+      rows.push([ing.name, ing.role, `${ing.pct.toFixed(2)}%`, c.displayQty, ing.rate, c.cost.toFixed(2)]);
+    });
+
+    rows.push([]);
+    rows.push(['Total', '', '100.00%', `${batchSize} Liters`, '', productTotalCost(currentProduct, batchSize).toFixed(2)]);
+
+    const csv = rows.map(row => row.map(cell => `"${String(cell ?? '').replace(/"/g,'""')}"`).join(',')).join('\n');
+    const blob = new Blob([csv], {type:'text/csv;charset=utf-8;'});
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = `${currentProduct.id}-concentrate-sheet.csv`;
+    document.body.appendChild(a);
+    a.click();
+    a.remove();
+    URL.revokeObjectURL(url);
+  }
+
+  els.openMenuBtn.addEventListener('click', () => toggleSidebar(true));
+  els.closeMenuBtn.addEventListener('click', () => toggleSidebar(false));
+  els.backdrop.addEventListener('click', () => toggleSidebar(false));
+  els.searchProduct.addEventListener('input', e => renderSidebar(e.target.value));
+  els.batchSize.addEventListener('input', renderBatch);
+  els.batchUnit.addEventListener('change', renderBatch);
+  els.otherCost.addEventListener('input', renderBatch);
+  els.printBtn.addEventListener('click', () => window.print());
+  els.exportCsvBtn.addEventListener('click', exportCsv);
+  els.resetBatchBtn.addEventListener('click', () => {
+    els.batchSize.value = 10;
+    renderBatch();
+  });
+  els.toggleSopBtn.addEventListener('click', () => {
+    const hidden = els.sopContent.classList.toggle('hidden');
+    els.toggleSopBtn.textContent = hidden ? 'Show' : 'Hide';
+  });
+
+  renderSidebar();
+</script>
+</body>
+</html>
