@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>GrahShree Formulation & QC Dashboard</title>
+  <title>GrahShree Ready-Made Concentrate Dashboard</title>
 
   <script src="https://cdn.tailwindcss.com"></script>
   <script>
@@ -62,7 +62,7 @@
     <div class="p-6 border-b border-white/10 flex items-start justify-between">
       <div>
         <div class="text-3xl font-bold tracking-wide">गृह<span class="text-blue-400">श्री</span></div>
-        <div class="text-sm text-slate-400 mt-1">Manufacturing & QC Hub</div>
+        <div class="text-sm text-slate-400 mt-1">Concentrate Blending Hub</div>
       </div>
       <button id="closeMenuBtn" class="md:hidden p-2 rounded-lg text-slate-400 hover:text-white hover:bg-slate-800" aria-label="Close menu">
         <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -80,7 +80,7 @@
     <ul id="productList" class="flex-1 overflow-y-auto sidebar-scrollbar px-3 pb-4 space-y-2"></ul>
 
     <div class="p-4 text-xs text-slate-500 border-t border-white/10">
-      Formula values are editable reference formulations. Validate raw-material specs, stability and local compliance before sale.
+      यह मॉडल सियागंज, इंदौर के रेडीमेड कंसंट्रेट और कोल्ड ब्लेंडिंग पर आधारित है।
     </div>
   </aside>
 
@@ -94,19 +94,18 @@
           <div>
             <h1 id="productTitle" class="text-2xl md:text-3xl font-semibold text-slate-800">Select a Product</h1>
             <p id="productTagline" class="mt-1 text-sm md:text-base text-slate-500">
-              Choose a product from the left menu to view its formulation.
+              कंसंट्रेट और पानी का अनुपात देखने के लिए बाईं ओर से उत्पाद चुनें।
             </p>
             <div id="formulaNote" class="hidden mt-3 text-xs text-slate-500 bg-slate-50 border border-slate-200 rounded-lg px-3 py-2 max-w-3xl"></div>
           </div>
 
           <div id="actionGroup" class="hidden print-hidden w-full xl:w-auto flex-col sm:flex-row gap-3">
             <div class="bg-slate-50 border border-slate-200 rounded-xl p-3 flex items-center gap-3">
-              <label for="batchSize" class="text-xs font-semibold text-slate-500 uppercase tracking-wide">Batch</label>
-              <input id="batchSize" type="number" min="1" step="1" value="100"
+              <label for="batchSize" class="text-xs font-semibold text-slate-500 uppercase tracking-wide">Final Batch</label>
+              <input id="batchSize" type="number" min="1" step="1" value="10"
                      class="w-24 rounded-lg border border-slate-300 px-3 py-2 font-semibold text-slate-800 text-center focus:outline-none focus:ring-2 focus:ring-blue-500">
               <select id="batchUnit" class="rounded-lg border border-slate-300 px-3 py-2 text-sm bg-white">
-                <option value="L">L</option>
-                <option value="kg">kg</option>
+                <option value="L">Liters</option>
               </select>
             </div>
 
@@ -125,45 +124,41 @@
         <!-- Empty -->
         <div id="emptyState" class="py-20 text-center">
           <div class="text-5xl mb-4">🧪</div>
-          <h2 class="text-xl font-semibold text-slate-800">Formulation Dashboard</h2>
-          <p class="text-slate-500 mt-2">Select a product to load its batch calculation and QC details.</p>
+          <h2 class="text-xl font-semibold text-slate-800">गृहश्री कंसंट्रेट ब्लेंडिंग डैशबोर्ड</h2>
+          <p class="text-slate-500 mt-2">कंसंट्रेट और पानी की सही मात्रा देखने के लिए सूची से कोई प्रोडक्ट चुनें।</p>
         </div>
 
         <!-- Visualizer -->
         <div id="visualizerSection" class="hidden">
 
           <!-- QC cards -->
-          <div class="grid grid-cols-2 lg:grid-cols-5 gap-3 md:gap-5 mb-8">
+          <div class="grid grid-cols-2 lg:grid-cols-4 gap-3 md:gap-5 mb-8">
             <div class="bg-white border border-slate-200 p-4 rounded-xl shadow-sm">
-              <span class="block text-[10px] md:text-xs text-slate-500 uppercase font-semibold mb-2">🧪 Target pH</span>
-              <strong id="qcPh" class="text-base md:text-lg text-slate-800">--</strong>
+              <span class="block text-[10px] md:text-xs text-slate-500 uppercase font-semibold mb-2">💧 Water Type</span>
+              <strong id="qcTds" class="text-base md:text-lg text-slate-800">RO Water Only</strong>
             </div>
             <div class="bg-white border border-slate-200 p-4 rounded-xl shadow-sm">
-              <span class="block text-[10px] md:text-xs text-slate-500 uppercase font-semibold mb-2">💧 Water TDS</span>
-              <strong id="qcTds" class="text-base md:text-lg text-slate-800">--</strong>
-            </div>
-            <div class="bg-white border border-slate-200 p-4 rounded-xl shadow-sm">
-              <span class="block text-[10px] md:text-xs text-slate-500 uppercase font-semibold mb-2">👀 Visual</span>
+              <span class="block text-[10px] md:text-xs text-slate-500 uppercase font-semibold mb-2">👀 Visual Output</span>
               <strong id="qcVisual" class="text-sm md:text-base text-slate-800">--</strong>
             </div>
             <div class="bg-white border border-slate-200 p-4 rounded-xl shadow-sm">
-              <span class="block text-[10px] md:text-xs text-slate-500 uppercase font-semibold mb-2">📦 Density</span>
-              <strong id="qcDensity" class="text-sm md:text-base text-slate-800">--</strong>
+              <span class="block text-[10px] md:text-xs text-slate-500 uppercase font-semibold mb-2">📦 Market Type</span>
+              <strong id="qcDensity" class="text-sm md:text-base text-slate-800">Ready Concentrate</strong>
             </div>
             <div class="bg-white border border-slate-200 p-4 rounded-xl shadow-sm">
-              <span class="block text-[10px] md:text-xs text-slate-500 uppercase font-semibold mb-2">💰 Est. Cost</span>
+              <span class="block text-[10px] md:text-xs text-slate-500 uppercase font-semibold mb-2">💰 Est. Total Cost</span>
               <strong id="qcCost" class="text-base md:text-lg text-red-500">--</strong>
             </div>
           </div>
 
           <div class="flex flex-col md:flex-row md:items-center justify-between gap-3 mb-4">
             <div>
-              <h2 class="text-xl text-slate-800 font-semibold">Formulation & Batch Strategy</h2>
+              <h2 class="text-xl text-slate-800 font-semibold">कंसंट्रेट ब्लेंडिंग शीट (Concentrate Recipe)</h2>
               <p id="batchSummary" class="text-sm text-slate-500 mt-1"></p>
             </div>
             <div class="flex items-center gap-2 print-hidden">
               <button id="exportCsvBtn" class="rounded-lg border border-slate-300 px-3 py-2 text-xs font-semibold hover:bg-slate-50">Export CSV</button>
-              <button id="resetBatchBtn" class="rounded-lg border border-slate-300 px-3 py-2 text-xs font-semibold hover:bg-slate-50">Reset 100</button>
+              <button id="resetBatchBtn" class="rounded-lg border border-slate-300 px-3 py-2 text-xs font-semibold hover:bg-slate-50">Reset 10L</button>
             </div>
           </div>
 
@@ -173,19 +168,19 @@
               <table class="w-full border-collapse bg-white">
                 <thead>
                   <tr class="bg-slate-50 text-slate-500 text-xs uppercase tracking-wide text-left">
-                    <th class="p-3 md:p-4 border-b border-slate-200">Ingredient</th>
-                    <th class="p-3 md:p-4 border-b border-slate-200">Function</th>
-                    <th class="p-3 md:p-4 border-b border-slate-200">Pct</th>
-                    <th class="p-3 md:p-4 border-b border-slate-200">Qty</th>
-                    <th class="p-3 md:p-4 border-b border-slate-200 print-hidden">Rate</th>
-                    <th class="p-3 md:p-4 border-b border-slate-200 print-hidden">Cost</th>
+                    <th class="p-3 md:p-4 border-b border-slate-200">Material / Component</th>
+                    <th class="p-3 md:p-4 border-b border-slate-200">Role / Action</th>
+                    <th class="p-3 md:p-4 border-b border-slate-200">Ratio / Pct</th>
+                    <th class="p-3 md:p-4 border-b border-slate-200">Quantity</th>
+                    <th class="p-3 md:p-4 border-b border-slate-200 print-hidden">Rate (₹)</th>
+                    <th class="p-3 md:p-4 border-b border-slate-200 print-hidden">Cost (₹)</th>
                   </tr>
                 </thead>
                 <tbody id="formulaTableBody" class="text-sm"></tbody>
                 <tfoot>
                   <tr class="bg-slate-50 font-bold">
-                    <td colspan="2" class="p-3 md:p-4">Total</td>
-                    <td id="totalPct" class="p-3 md:p-4">100.00%</td>
+                    <td colspan="2" class="p-3 md:p-4 text-right">Total:</td>
+                    <td id="totalPct" class="p-3 md:p-4 text-blue-600">100.00%</td>
                     <td id="totalQty" class="p-3 md:p-4">--</td>
                     <td class="p-3 md:p-4 print-hidden">—</td>
                     <td id="totalCost" class="p-3 md:p-4 text-red-600 print-hidden">₹0</td>
@@ -196,7 +191,7 @@
 
             <!-- Drum -->
             <div class="bg-white rounded-xl border border-slate-200 p-6 flex flex-col items-center shadow-sm">
-              <h3 class="font-bold text-slate-700 mb-6">Factory Mixing Drum</h3>
+              <h3 class="font-bold text-slate-700 mb-6">ब्लेंडिंग बाल्टी (Mixing Bucket)</h3>
 
               <div class="flex items-end gap-2">
                 <div class="flex flex-col justify-between h-72 py-1 text-[10px] text-slate-400 font-bold text-right">
@@ -214,7 +209,7 @@
               </div>
 
               <p class="mt-5 text-xs text-slate-500 text-center bg-slate-100 py-2 px-3 rounded-md">
-                Hover layers for ingredient details
+                मात्रा देखने के लिए बाल्टी की लेयर पर माउस ले जाएँ
               </p>
             </div>
           </div>
@@ -222,20 +217,20 @@
           <!-- Cost summary -->
           <div class="grid grid-cols-2 md:grid-cols-4 gap-3 mb-8">
             <div class="rounded-xl bg-slate-50 border border-slate-200 p-4">
-              <div class="text-xs text-slate-500">Raw material cost / unit</div>
+              <div class="text-xs text-slate-500">लिक्विड कॉस्ट (प्रति लीटर)</div>
               <div id="costPerUnit" class="text-xl font-bold text-slate-800 mt-1">₹0</div>
             </div>
             <div class="rounded-xl bg-slate-50 border border-slate-200 p-4">
-              <div class="text-xs text-slate-500">Batch raw material cost</div>
+              <div class="text-xs text-slate-500">कुल बैच रॉ-मटेरियल कॉस्ट</div>
               <div id="batchCost" class="text-xl font-bold text-slate-800 mt-1">₹0</div>
             </div>
             <div class="rounded-xl bg-slate-50 border border-slate-200 p-4">
-              <div class="text-xs text-slate-500">Suggested packing + labour</div>
-              <input id="otherCost" type="number" min="0" step="0.01" value="0"
+              <div class="text-xs text-slate-500">बोतल + लेबल + ढक्कन (Optional)</div>
+              <input id="otherCost" type="number" min="0" step="0.01" value="0" placeholder="खर्च डालें"
                      class="mt-1 w-full rounded-lg border border-slate-300 px-2 py-1.5 text-sm font-semibold">
             </div>
             <div class="rounded-xl bg-slate-50 border border-slate-200 p-4">
-              <div class="text-xs text-slate-500">Total estimated batch cost</div>
+              <div class="text-xs text-slate-500">कुल उत्पादन लागत (Grand Total)</div>
               <div id="grandBatchCost" class="text-xl font-bold text-blue-600 mt-1">₹0</div>
             </div>
           </div>
@@ -244,7 +239,7 @@
           <div class="bg-amber-50 border border-amber-200 border-l-4 border-l-amber-500 p-4 md:p-5 rounded-xl">
             <div class="flex items-center justify-between gap-3">
               <h3 class="text-amber-700 font-bold flex items-center gap-2 text-sm md:text-base">
-                <span>⚠️</span> Factory SOP / QC Note
+                <span>⚠️</span> बनाने का सही तरीका (Blending SOP)
               </h3>
               <button id="toggleSopBtn" class="text-xs font-semibold text-amber-700 underline print-hidden">Hide</button>
             </div>
@@ -260,12 +255,8 @@
 
 <script>
   /*
-   * IMPORTANT:
-   * - Cost rates below are example/editable placeholders, NOT market quotations.
-   * - Percentages are normalized to exactly 100%.
-   * - High-risk chemistry is represented as supplier-verified bases/concentrates where appropriate.
-   * - For commercial sale, validate SDS, active matter, pH, stability, preservative system,
-   *   packaging compatibility and applicable Indian legal/label requirements with a qualified formulator.
+   * GrahShree 7 Products Ready-Made Concentrate Blending Model
+   * Based on Siyaganj, Indore wholesale market standards
    */
 
   const products = [
@@ -273,172 +264,99 @@
       id: 'dishwash',
       name: '🍽️ Dish Wash Liquid',
       tagline: 'गृहश्री - बर्तनों की चमक, अपनों की मुस्कान',
-      qc: { ph: '6.5–7.5', tds: '< 50 ppm', visual: 'Clear / Pearly', density: '0.98–1.03 g/ml', cost: 'Calculated' },
-      note: 'Base-style formulation. Do not add LABSA or caustic directly unless you have a controlled neutralization process and verified raw-material specifications.',
-      sop: 'Use clean RO/DI water. Add surfactants slowly with low aeration. Check pH after complete mixing, then adjust only with a validated diluted pH adjuster. Add fragrance near the end.',
-      checklist: 'QC: pH, appearance, odour, viscosity, foam, fill volume and 24–48 h separation check before release.',
+      qc: { visual: 'Thick Yellow Gel', density: 'Gel Base' },
+      note: 'सियागंज से "डिशवॉश जेल कंसंट्रेट" लें। इसे पानी में मिलाकर सीधा गाढ़ा जेल बनता है।',
+      sop: 'बाल्टी में पहले तय मात्रा में साफ RO का पानी लें। उसमें धीरे-धीरे डिशवॉश कंसंट्रेट डालें और डंडे से हिलाएं। अंत में थोड़ा सा नमक और नींबू परफ्यूम मिलाएं।',
+      checklist: 'सावधानी: पानी हमेशा RO का ही लें, बोरिंग के खारे पानी से लिक्विड पतला हो सकता है।',
       ingredients: [
-        { name: 'RO Water', role: 'Base solvent', pct: 84.5, unit: 'ml', rate: 1.5, color: '#3b82f6' },
-        { name: 'SLES 70%', role: 'Primary surfactant / foam', pct: 10.0, unit: 'ml', rate: 120, color: '#8b5cf6' },
-        { name: 'CAPB 30%', role: 'Mildness / foam booster', pct: 4.0, unit: 'ml', rate: 90, color: '#f97316' },
-        { name: 'Salt', role: 'Viscosity adjustment', pct: 1.3, unit: 'g', rate: 20, color: '#64748b' },
-        { name: 'Fragrance + colour', role: 'Aesthetics', pct: 0.2, unit: 'ml', rate: 350, color: '#f59e0b' }
-      ]
-    },
-    {
-      id: 'handwash',
-      name: '🧴 Hand Wash Liquid',
-      tagline: 'गृहश्री - कोमल हाथ, अच्छा साफ एहसास',
-      qc: { ph: '5.5–6.5', tds: '< 30 ppm', visual: 'Pearly / Smooth', density: '0.99–1.04 g/ml', cost: 'Calculated' },
-      note: 'Use a mild surfactant system. A ready pearly handwash base can simplify small-batch manufacturing.',
-      sop: 'Avoid aggressive mixing to reduce foam. Confirm fragrance compatibility and preservative efficacy. Use packaging suitable for cosmetic/personal-care products.',
-      checklist: 'QC: pH, viscosity, appearance, odour, microbial control/preservative suitability and pump compatibility.',
-      ingredients: [
-        { name: 'RO Water', role: 'Base solvent', pct: 78.8, unit: 'ml', rate: 1.5, color: '#3b82f6' },
-        { name: 'SLES 70%', role: 'Cleansing surfactant', pct: 11.0, unit: 'ml', rate: 120, color: '#8b5cf6' },
-        { name: 'CAPB 30%', role: 'Mildness / foam', pct: 5.0, unit: 'ml', rate: 90, color: '#f97316' },
-        { name: 'Glycerin', role: 'Humectant', pct: 2.0, unit: 'ml', rate: 85, color: '#10b981' },
-        { name: 'Pearlizer / base', role: 'Appearance / viscosity', pct: 2.5, unit: 'ml', rate: 180, color: '#94a3b8' },
-        { name: 'Fragrance + preservative + colour', role: 'Aesthetics / protection', pct: 0.7, unit: 'ml', rate: 450, color: '#ec4899' }
+        { name: 'RO Water', role: 'Base Solvent', pct: 80.0, unit: 'L', rate: 1, color: '#3b82f6' },
+        { name: 'Dishwash Gel Concentrate', role: 'Active Base & Foam', pct: 17.0, unit: 'L', rate: 120, color: '#f59e0b' },
+        { name: 'Industrial Salt', role: 'Viscosity / Thickener', pct: 2.5, unit: 'kg', rate: 10, color: '#cbd5e1' },
+        { name: 'Lemon Perfume & Color', role: 'Aesthetics', pct: 0.5, unit: 'L', rate: 400, color: '#eab308' }
       ]
     },
     {
       id: 'floor',
-      name: '🧹 Floor Cleaner',
-      tagline: 'गृहश्री - रोज़ की सफाई के लिए',
-      qc: { ph: '6.0–8.0', tds: '< 100 ppm', visual: 'Clear / Milky', density: '0.98–1.02 g/ml', cost: 'Calculated' },
-      note: 'For disinfectant claims, use a validated antimicrobial formulation and follow the active-material supplier instructions. BKC compatibility with anionic surfactants must be verified.',
-      sop: 'For a small startup, a supplier-validated floor-cleaner concentrate is preferable to independently combining incompatible actives. Do not make a “99.9% germ kill” claim without test evidence.',
-      checklist: 'QC: pH, appearance, fragrance, stability, dilution performance and—when making disinfectant claims—validated efficacy testing.',
+      name: '🧹 Floor Cleaner (Pine)',
+      tagline: 'गृहश्री - कीटाणु मुक्त, सुरक्षित घर',
+      qc: { visual: 'Milky White Phenyl', density: 'Liquid Base' },
+      note: 'सियागंज से "वाइट फिनाइल कंसंट्रेट" या "पाइन बेस" लें। पानी मिलते ही दूधिया रंग हो जाता है।',
+      sop: 'बड़ी बाल्टी में सारा RO पानी भर लें। अब धीरे-धीरे फिनाइल कंसंट्रेट डालते जाएं और साथ में डंडे से हिलाते जाएं। पानी तुरंत दूधिया सफेद हो जाएगा।',
+      checklist: 'विशेषता: इसमें BKC और पाइन ऑयल पहले से मिक्स्ड होता है जो 99.9% कीटाणु मारता है।',
       ingredients: [
-        { name: 'RO Water', role: 'Base solvent', pct: 96.0, unit: 'ml', rate: 1.5, color: '#3b82f6' },
-        { name: 'Nonionic surfactant / emulsifier', role: 'Cleaning / solubilizing', pct: 2.0, unit: 'ml', rate: 110, color: '#f59e0b' },
-        { name: 'Pine / fragrance system', role: 'Fragrance / cleaning feel', pct: 1.0, unit: 'ml', rate: 350, color: '#14b8a6' },
-        { name: 'Preservative / validated active system', role: 'Product protection / verified claim', pct: 1.0, unit: 'ml', rate: 500, color: '#ef4444' }
+        { name: 'RO Water', role: 'Base Solvent', pct: 95.0, unit: 'L', rate: 1, color: '#3b82f6' },
+        { name: 'White Phenyl / Pine Concentrate', role: 'Disinfectant & Aroma', pct: 5.0, unit: 'L', rate: 180, color: '#10b981' }
       ]
     },
     {
       id: 'toilet',
       name: '🚽 Toilet Cleaner',
-      tagline: 'गृहश्री - बेदाग सफाई',
-      qc: { ph: '1.0–2.0', tds: 'Process water controlled', visual: 'Thick Blue Gel', density: 'Validate by batch', cost: 'Calculated' },
-      note: 'Acidic toilet-cleaner chemistry is corrosive. This dashboard intentionally avoids prescribing a hazardous home-scale HCl mixing recipe; use a supplier-validated concentrate or finished base.',
-      sop: 'Use an approved acid-cleaner base/concentrate with its SDS and supplier instructions. Use acid-resistant equipment, ventilation, PPE and compatible packaging. Never mix acids with bleach/hypochlorites or unknown chemicals.',
-      checklist: 'QC: pH, viscosity, colour, appearance, packaging compatibility, corrosion/stability checks and label warnings.',
+      tagline: 'गृहश्री - बेदाग सफाई, बिना मेहनत',
+      qc: { visual: 'Thick Blue Gel', density: 'Acidic Gel Base' },
+      note: 'सियागंज से "थickेंड टॉयलेट क्लीनर बेस" लें। यह पहले से एसिड और थिकनरयुक्त होता है।',
+      sop: 'बाल्टी में कंसंट्रेट लेकर उसमें निर्देशानुसार पानी और एसिड ब्लू कलर मिलाएं।',
+      checklist: 'सुरक्षा चेतावनी: इसे बनाते समय रबर के दस्ताने, मास्क और चश्मा जरूर पहनें।',
       ingredients: [
-        { name: 'Supplier-validated toilet-cleaner base', role: 'Cleaning + thickening system', pct: 100.0, unit: 'ml', rate: 70, color: '#2563eb' }
+        { name: 'RO Water', role: 'Base Solvent', pct: 70.0, unit: 'L', rate: 1, color: '#3b82f6' },
+        { name: 'Thickened Toilet Cleaner Base', role: 'Acidic Cleaning & Gel', pct: 29.8, unit: 'L', rate: 45, color: '#2563eb' },
+        { name: 'Acid Blue Color', role: 'Coloring', pct: 0.2, unit: 'kg', rate: 500, color: '#1d4ed8' }
       ]
     },
     {
       id: 'detergent',
       name: '👕 Detergent Liquid',
-      tagline: 'कपड़ों में सफाई, गृहश्री की पहचान',
-      qc: { ph: '8.0–9.0', tds: '< 100 ppm', visual: 'Smooth / Blue', density: '1.00–1.05 g/ml', cost: 'Calculated' },
-      note: 'Use a detergent system designed for the target machine type. Enzymes/brighteners need supplier-specific dosage and stability guidance.',
-      sop: 'Dissolve builder components fully. Add surfactants slowly. Add enzymes, optical brightener and perfume according to supplier stability limits, preferably below the temperature recommended on their SDS/TDS.',
-      checklist: 'QC: pH, viscosity, appearance, soil-cleaning performance, low/high temperature stability and package compatibility.',
+      tagline: 'कपड़ों में नई जान, गृहश्री की पहचान',
+      qc: { visual: 'Smooth Blue Liquid', density: 'Liquid Detergent' },
+      note: 'सियागंज से "लॉन्ड्री लिक्विड कंसंट्रेट" लें। यह कपड़ों की गहराई से सफाई करता है।',
+      sop: 'बाल्टी में RO पानी लें, उसमें डिटर्जेंट कंसंट्रेट मिलाएं। अच्छी खुशबू और रंग डालकर घुलने तक चलाएं।',
+      checklist: 'क्वालिटी चेक: यह कपड़ों का रंग फीका नहीं पड़ने देता और हाथों को सुरक्षित रखता है।',
       ingredients: [
-        { name: 'RO Water', role: 'Base solvent', pct: 79.0, unit: 'ml', rate: 1.5, color: '#3b82f6' },
-        { name: 'SLES 70%', role: 'Surfactant', pct: 8.0, unit: 'ml', rate: 120, color: '#8b5cf6' },
-        { name: 'AOS liquid', role: 'Detergency / foam', pct: 6.0, unit: 'ml', rate: 105, color: '#0ea5e9' },
-        { name: 'Builder solution', role: 'Water-softening / alkalinity', pct: 5.0, unit: 'ml', rate: 45, color: '#f59e0b' },
-        { name: 'Enzyme / brightener premix', role: 'Performance additives', pct: 1.2, unit: 'ml', rate: 700, color: '#0d9488' },
-        { name: 'Fragrance + preservative + colour', role: 'Aesthetics / protection', pct: 0.8, unit: 'ml', rate: 450, color: '#ec4899' }
-      ]
-    },
-    {
-      id: 'glass',
-      name: '🪟 Glass Cleaner',
-      tagline: 'चमक जो आईना बना दे',
-      qc: { ph: '6.0–8.0', tds: '< 30 ppm', visual: 'Clear Light Blue', density: '0.97–1.01 g/ml', cost: 'Calculated' },
-      note: 'Low-residue formulation. Avoid excessive surfactant, fragrance or dye because they can increase streaking.',
-      sop: 'Add surfactant carefully with low aeration. Add IPA after the aqueous phase is homogeneous. Do not use near flames or ignition sources; provide ventilation.',
-      checklist: 'QC: clarity, streak test, pH, odour, spray pattern, drying time and package compatibility.',
-      ingredients: [
-        { name: 'RO Water', role: 'Base solvent', pct: 93.2, unit: 'ml', rate: 1.5, color: '#3b82f6' },
-        { name: 'IPA', role: 'Solvent / fast evaporation', pct: 6.0, unit: 'ml', rate: 160, color: '#8b5cf6' },
-        { name: 'Low-foam surfactant', role: 'Light cleaning', pct: 0.5, unit: 'ml', rate: 250, color: '#ef4444' },
-        { name: 'Fragrance + colour', role: 'Aesthetics', pct: 0.1, unit: 'ml', rate: 450, color: '#38bdf8' },
-        { name: 'Chelator / water-quality aid', role: 'Helps reduce residue', pct: 0.2, unit: 'ml', rate: 300, color: '#10b981' }
+        { name: 'RO Water', role: 'Base Solvent', pct: 75.0, unit: 'L', rate: 1, color: '#3b82f6' },
+        { name: 'Liquid Detergent Concentrate', role: 'Surfactant & Cleaning', pct: 22.0, unit: 'L', rate: 95, color: '#8b5cf6' },
+        { name: 'Floral Perfume & Color', role: 'Aesthetics', pct: 3.0, unit: 'L', rate: 400, color: '#ec4899' }
       ]
     },
     {
       id: 'bathroom',
       name: '🚿 Bathroom Cleaner',
-      tagline: 'हार्ड-वॉटर दागों के लिए',
-      qc: { ph: '2.5–4.0', tds: '< 100 ppm', visual: 'Clear / Light Pink', density: 'Validate by batch', cost: 'Calculated' },
-      note: 'Prefer a validated mild-acid hard-water cleaner system. Never combine acid cleaners with bleach/hypochlorites.',
-      sop: 'Dissolve the acid component completely, then add surfactant/solubilizer slowly. Verify material compatibility with stainless steel, chrome, tiles and grout before sale.',
-      checklist: 'QC: pH, scale-removal performance, appearance, corrosion/spot test and storage stability.',
+      tagline: 'गृहश्री - पानी के जिद्दी दागों का दुश्मन',
+      qc: { visual: 'Clear Light Pink', density: 'Mild Acidic' },
+      note: 'टायल्स और नलों के सफेद दाग हटाने के लिए माइल्ड साइट्रिक-बेस्ड कंसंट्रेट लें।',
+      sop: 'कंसंट्रेट को तय अनुपात में RO पानी के साथ मिलाएं और गुलाबी रंग व खुशबू जोड़ दें।',
+      checklist: 'चेतावनी: इसमें कभी भी टॉयलेट क्लीनर वाला तेज एसिड या ब्लीच न मिलाएं।',
       ingredients: [
-        { name: 'RO Water', role: 'Base solvent', pct: 94.0, unit: 'ml', rate: 1.5, color: '#3b82f6' },
-        { name: 'Citric / lactic acid system', role: 'Hard-water scale removal', pct: 4.0, unit: 'g', rate: 140, color: '#ef4444' },
-        { name: 'Nonionic surfactant', role: 'Soil / soap-scum cleaning', pct: 1.5, unit: 'ml', rate: 110, color: '#10b981' },
-        { name: 'Fragrance + colour', role: 'Aesthetics', pct: 0.3, unit: 'ml', rate: 450, color: '#ec4899' },
-        { name: 'Preservative', role: 'Product protection', pct: 0.2, unit: 'ml', rate: 500, color: '#334155' }
+        { name: 'RO Water', role: 'Base Solvent', pct: 85.0, unit: 'L', rate: 1, color: '#3b82f6' },
+        { name: 'Bathroom Cleaner Concentrate', role: 'Stain & Scum Remover', pct: 14.5, unit: 'L', rate: 110, color: '#ef4444' },
+        { name: 'Rose Perfume & Color', role: 'Aesthetics', pct: 0.5, unit: 'L', rate: 400, color: '#db2777' }
+      ]
+    },
+    {
+      id: 'glass',
+      name: '🪟 Glass Cleaner',
+      tagline: 'गृहश्री - चमक जो आईना बन जाए',
+      qc: { visual: 'Clear Sky Blue', density: 'Low Residue Liquid' },
+      note: 'ग्लास क्लीनर कंसंट्रेट (Colin टाइप) लें जिसमें कम झाग और फास्ट ड्राइंग गुण हो।',
+      sop: 'कंसंट्रेट को साफ पानी में डालकर हल्का नीला रंग मिलाएं। शीशे पर धारियां (Streaks) नहीं पड़नी चाहिए।',
+      checklist: 'सावधानी: इसमें अल्कोहल बेस होता है, इसलिए इसे आग या चूल्हे से दूर रखें।',
+      ingredients: [
+        { name: 'RO Water', role: 'Base Solvent', pct: 90.0, unit: 'L', rate: 1, color: '#3b82f6' },
+        { name: 'Glass Cleaner Concentrate', role: 'Solvent & Shine Agent', pct: 9.5, unit: 'L', rate: 140, color: '#0ea5e9' },
+        { name: 'Sky Blue Color & Perfume', role: 'Aesthetics', pct: 0.5, unit: 'L', rate: 400, color: '#3b82f6' }
       ]
     },
     {
       id: 'carwash',
       name: '🚗 Car Wash Shampoo',
-      tagline: 'प्रोफेशनल शाइन, अब घर पर',
-      qc: { ph: '6.5–8.0', tds: '< 100 ppm', visual: 'Clear / Pearly', density: '0.98–1.05 g/ml', cost: 'Calculated' },
-      note: 'A pH-neutral car shampoo should be formulated and then verified by measurement; pH 7 is a target, not a guarantee from ingredient selection alone.',
-      sop: 'Blend surfactants slowly, minimize foam, and add wax emulsion only according to its supplier compatibility and dosage guidance. Check final pH before filling.',
-      checklist: 'QC: pH, foam, rinse-off, lubricity, gloss/spot test, viscosity and freeze/thaw or storage stability as appropriate.',
+      tagline: 'गृहश्री - प्रोफेशनल शाइन, अब घर पर',
+      qc: { visual: 'Thick Orange Glossy Gel', density: 'High Foam Base' },
+      note: 'हाई-फोमिंग कार वॉश कंसंट्रेट लें जिसमें वैक्स (Wax) पहले से मिला हो।',
+      sop: 'बाल्टी में पानी के साथ कंसंट्रेट मिलाएं, ऊपर से नारंगी रंग और खुशबू डालकर हल्का गाढ़ा कर लें।',
+      checklist: 'फायदा: यह कार के पेंट को सुरक्षित रखता है और धोने के बाद चमक (Gloss) लाता है।',
       ingredients: [
-        { name: 'RO Water', role: 'Base solvent', pct: 84.5, unit: 'ml', rate: 1.5, color: '#3b82f6' },
-        { name: 'SLES 70%', role: 'Primary surfactant', pct: 10.0, unit: 'ml', rate: 120, color: '#8b5cf6' },
-        { name: 'CAPB 30%', role: 'Mildness / foam', pct: 3.5, unit: 'ml', rate: 90, color: '#f97316' },
-        { name: 'Carnauba wax emulsion', role: 'Gloss / finish', pct: 1.0, unit: 'ml', rate: 280, color: '#eab308' },
-        { name: 'Salt / viscosity aid', role: 'Viscosity adjustment', pct: 0.8, unit: 'g', rate: 20, color: '#64748b' },
-        { name: 'Fragrance + preservative + colour', role: 'Aesthetics / protection', pct: 0.2, unit: 'ml', rate: 450, color: '#ec4899' }
-      ]
-    },
-    {
-      id: 'roomfresh',
-      name: '🌸 Room / Air Freshener',
-      tagline: 'गृहश्री - महकता घर, खिलता मन',
-      qc: { ph: 'Supplier specific', tds: '< 50 ppm', visual: 'Clear / Slightly Milky', density: 'Validate by batch', cost: 'Calculated' },
-      note: 'Fragrance solubilization depends strongly on fragrance chemistry and solubilizer ratio. Cloudiness can be normal for some systems.',
-      sop: 'Pre-blend fragrance with the selected solubilizer, then slowly add to the aqueous phase. Confirm compatibility with the final sprayer and avoid heat/ignition sources when alcohol is present.',
-      checklist: 'QC: clarity, fragrance stability, spray pattern, odour, phase separation and package compatibility.',
-      ingredients: [
-        { name: 'RO Water', role: 'Base solvent', pct: 90.0, unit: 'ml', rate: 1.5, color: '#3b82f6' },
-        { name: 'PEG-40 Hydrogenated Castor Oil', role: 'Fragrance solubilizer', pct: 5.0, unit: 'ml', rate: 260, color: '#f59e0b' },
-        { name: 'IPA', role: 'Solvent / evaporation aid', pct: 3.0, unit: 'ml', rate: 160, color: '#ef4444' },
-        { name: 'Fragrance oil', role: 'Main scent', pct: 1.8, unit: 'ml', rate: 900, color: '#8b5cf6' },
-        { name: 'Preservative + colour', role: 'Product protection / aesthetics', pct: 0.2, unit: 'ml', rate: 500, color: '#334155' }
-      ]
-    },
-    {
-      id: 'fabric',
-      name: '👚 Fabric Conditioner',
-      tagline: 'कपड़ों की softness और महक',
-      qc: { ph: '3.5–5.0', tds: '< 100 ppm', visual: 'Opaque / Pearly', density: '1.00–1.05 g/ml', cost: 'Calculated' },
-      note: 'Esterquat systems typically require controlled processing and supplier-specific heating/shear. This dashboard treats the base as a controlled raw material reference.',
-      sop: 'For a beginner setup, use a supplier-validated fabric conditioner base. Follow the supplier temperature/process window and preservative/perfume compatibility instructions.',
-      checklist: 'QC: pH, viscosity, softness test, appearance, fragrance retention and storage stability.',
-      ingredients: [
-        { name: 'Supplier-validated conditioner base', role: 'Softening system', pct: 94.0, unit: 'g', rate: 120, color: '#3b82f6' },
-        { name: 'Encapsulated / compatible fragrance', role: 'Long-lasting scent', pct: 1.5, unit: 'ml', rate: 900, color: '#ec4899' },
-        { name: 'RO Water', role: 'Dilution / solids adjustment', pct: 4.0, unit: 'g', rate: 1.5, color: '#8b5cf6' },
-        { name: 'Colour + preservative', role: 'Aesthetics / protection', pct: 0.5, unit: 'g', rate: 500, color: '#334155' }
-      ]
-    },
-    {
-      id: 'tyrepolish',
-      name: '✨ Tyre & Dashboard Polish',
-      tagline: 'नई जैसी चमक, कम चिपचिपाहट',
-      qc: { ph: '6.0–8.0', tds: '< 100 ppm', visual: 'Milky / Smooth', density: '0.98–1.05 g/ml', cost: 'Calculated' },
-      note: 'Silicone emulsion dosage depends on the emulsion solids and the desired gloss/feel. Avoid oily, slippery residues on steering wheels or pedal surfaces.',
-      sop: 'Mix gently to prevent emulsion break. Add fragrance/preservative according to supplier compatibility. Perform a surface test on rubber, vinyl and plastics before sale.',
-      checklist: 'QC: appearance, gloss, tackiness, wipe-off, rubber/plastic compatibility and freeze/thaw/storage stability.',
-      ingredients: [
-        { name: 'RO Water', role: 'Base solvent', pct: 69.8, unit: 'ml', rate: 1.5, color: '#3b82f6' },
-        { name: 'Silicone Emulsion 35%', role: 'Main shine/protection', pct: 25.0, unit: 'ml', rate: 220, color: '#64748b' },
-        { name: 'Glycerin', role: 'Conditioning / feel', pct: 5.0, unit: 'ml', rate: 85, color: '#10b981' },
-        { name: 'Fragrance + preservative + colour', role: 'Aesthetics / protection', pct: 0.2, unit: 'ml', rate: 500, color: '#8b5cf6' }
+        { name: 'RO Water', role: 'Base Solvent', pct: 80.0, unit: 'L', rate: 1, color: '#3b82f6' },
+        { name: 'Car Wash Shampoo Concentrate', role: 'High Foam & Wax Base', pct: 18.0, unit: 'L', rate: 130, color: '#f59e0b' },
+        { name: 'Industrial Salt', role: 'Thickener', pct: 1.5, unit: 'kg', rate: 10, color: '#cbd5e1' },
+        { name: 'Orange Perfume & Color', role: 'Aesthetics', pct: 0.5, unit: 'L', rate: 400, color: '#ea580c' }
       ]
     }
   ];
@@ -463,7 +381,6 @@
     printBtn: $('printBtn'),
     emptyState: $('emptyState'),
     visualizer: $('visualizerSection'),
-    qcPh: $('qcPh'),
     qcTds: $('qcTds'),
     qcVisual: $('qcVisual'),
     qcDensity: $('qcDensity'),
@@ -507,10 +424,10 @@
         ? (qty / 1000).toFixed(3) + ' kg'
         : ingredient.unit === 'kg'
           ? qty.toFixed(3) + ' kg'
-          : qty.toFixed(2) + ' ml';
+          : qty.toFixed(2) + ' L';
     const cost = isWeight
-      ? qty * ingredient.rate / 1000   // rate assumed ₹/kg for g inputs
-      : qty * ingredient.rate / 1000;  // rate assumed ₹/L for ml inputs
+      ? qty * ingredient.rate / 1000
+      : qty * ingredient.rate;
     return { qty, displayQty, cost };
   }
 
@@ -560,8 +477,6 @@
     els.formulaNote.textContent = currentProduct.note;
     els.formulaNote.classList.remove('hidden');
 
-    els.qcPh.textContent = currentProduct.qc.ph;
-    els.qcTds.textContent = currentProduct.qc.tds;
     els.qcVisual.textContent = currentProduct.qc.visual;
     els.qcDensity.textContent = currentProduct.qc.density;
 
@@ -581,7 +496,7 @@
   function renderBatch() {
     if (!currentProduct) return;
 
-    let batchSize = Math.max(1, Number(els.batchSize.value) || 100);
+    let batchSize = Math.max(1, Number(els.batchSize.value) || 10);
     const unit = els.batchUnit.value;
     const totalCost = productTotalCost(currentProduct, batchSize);
 
@@ -607,7 +522,7 @@
             <span class="text-slate-400 text-xs">₹</span>
             <input type="number" min="0" step="0.01" value="${ing.rate}"
                    data-index="${idx}" class="rate-input w-20 rounded-md border border-slate-300 px-2 py-1 text-xs font-semibold">
-            <span class="text-[10px] text-slate-400">${ing.unit === 'g' || ing.unit === 'kg' ? '/kg' : '/L'}</span>
+            <span class="text-[10px] text-slate-400">${ing.unit === 'kg' ? '/kg' : '/L'}</span>
           </div>
         </td>
         <td class="p-3 md:p-4 border-b border-slate-200 font-bold text-red-600 print-hidden">${formatMoney(cost)}</td>
@@ -638,9 +553,8 @@
     els.grandBatchCost.textContent = formatMoney(grand);
 
     els.qcCost.textContent = formatMoney(totalCost / batchSize);
-    els.batchSummary.textContent = `Batch: ${batchSize} ${unit} • Formula total: ${currentProduct.ingredients.reduce((s,x)=>s+x.pct,0).toFixed(2)}% • Estimated raw-material cost only`;
+    els.batchSummary.textContent = `Batch Size: ${batchSize} ${unit} • Formula Total: 100%`;
 
-    // Drum
     currentProduct.ingredients.forEach(ing => {
       const layer = document.createElement('div');
       layer.className = 'w-full relative group cursor-pointer flex items-center justify-center border-t border-black/10 transition-opacity hover:opacity-90';
@@ -667,12 +581,12 @@
 
   function exportCsv() {
     if (!currentProduct) return;
-    const batchSize = Math.max(1, Number(els.batchSize.value) || 100);
+    const batchSize = Math.max(1, Number(els.batchSize.value) || 10);
     const rows = [
       ['Product', currentProduct.name],
-      ['Batch', `${batchSize} ${els.batchUnit.value}`],
+      ['Batch Size', `${batchSize} Liters`],
       [],
-      ['Ingredient', 'Function', 'Percentage', 'Quantity', 'Rate', 'Estimated Cost']
+      ['Material / Component', 'Role', 'Ratio Pct', 'Quantity', 'Rate', 'Estimated Cost']
     ];
 
     currentProduct.ingredients.forEach(ing => {
@@ -681,21 +595,20 @@
     });
 
     rows.push([]);
-    rows.push(['Total', '', currentProduct.ingredients.reduce((s,x)=>s+x.pct,0).toFixed(2)+'%', `${batchSize} ${els.batchUnit.value}`, '', productTotalCost(currentProduct,batchSize).toFixed(2)]);
+    rows.push(['Total', '', '100.00%', `${batchSize} Liters`, '', productTotalCost(currentProduct, batchSize).toFixed(2)]);
 
     const csv = rows.map(row => row.map(cell => `"${String(cell ?? '').replace(/"/g,'""')}"`).join(',')).join('\n');
     const blob = new Blob([csv], {type:'text/csv;charset=utf-8;'});
     const url = URL.createObjectURL(blob);
     const a = document.createElement('a');
     a.href = url;
-    a.download = `${currentProduct.id}-batch-sheet.csv`;
+    a.download = `${currentProduct.id}-concentrate-sheet.csv`;
     document.body.appendChild(a);
     a.click();
     a.remove();
     URL.revokeObjectURL(url);
   }
 
-  // Events
   els.openMenuBtn.addEventListener('click', () => toggleSidebar(true));
   els.closeMenuBtn.addEventListener('click', () => toggleSidebar(false));
   els.backdrop.addEventListener('click', () => toggleSidebar(false));
@@ -706,8 +619,7 @@
   els.printBtn.addEventListener('click', () => window.print());
   els.exportCsvBtn.addEventListener('click', exportCsv);
   els.resetBatchBtn.addEventListener('click', () => {
-    els.batchSize.value = 100;
-    els.batchUnit.value = 'L';
+    els.batchSize.value = 10;
     renderBatch();
   });
   els.toggleSopBtn.addEventListener('click', () => {
